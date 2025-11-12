@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: dim_clients
+    description: "Conformed clients dimension"
+    columns:
+      - name: client_key
+        tests: [not_null, unique]
+
+  - name: dim_properties
+    description: "Conformed properties dimension"
+    columns:
+      - name: property_key
+        tests: [not_null, unique]
+
+  - name: dim_date
+    description: "Calendar table for reporting"
+    columns:
+      - name: date
+        tests: [not_null, unique]
+
+  - name: fct_sales
+    description: "Sales fact table"
+    columns:
+      - name: sale_id
+        tests: [not_null, unique]
+      - name: client_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_clients')
+              field: client_key
+      - name: property_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_properties')
+              field: property_key
+
+  - name: fct_expenses
+    description: "Expenses fact table"
+    columns:
+      - name: expense_id
+        tests: [not_null, unique]
+      - name: property_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_properties')
+              field: property_key
