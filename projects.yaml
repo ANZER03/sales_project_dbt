@@ -1,0 +1,6 @@
+sales_project:
+  target : dev
+  output :
+    dev : 
+      type : duckdb
+      path : "{{ current_working_directory}}/salesDB.duckdb"
