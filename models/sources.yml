@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: raw_data
+    schema: main  # DuckDB default
+    tables:
+      - name: Client_Table
+      - name: Expense_Table
+      - name : Property_Table
+      - name : Sales_Table
