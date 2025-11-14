@@ -6,7 +6,7 @@ select
     expense_type,
     amount,
     expense_date,
-    get_current_time() as loaded_at
+    current_timestamp as loaded_at
 from {{ ref('stg_expense') }}
 
 {% if is_incremental() %}

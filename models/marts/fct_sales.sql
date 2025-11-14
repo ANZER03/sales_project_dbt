@@ -18,7 +18,7 @@ select
     sale_date,
     means_of_sales,
     payment_status,
-    get_current_time() as loaded_at
+    current_timestamp as loaded_at
 from src
 
 {% if is_incremental() %}

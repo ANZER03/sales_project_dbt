@@ -19,6 +19,6 @@ select
     extract(year from date) as year,
     extract(month from date) as month,
     extract(day from date) as day,
-    strftime(date, '%Y-%m-%d') as date_str
+    to_char(date, 'YYYY-MM-DD') as date_str
 from dates
 order by date

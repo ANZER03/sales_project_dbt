@@ -1,0 +1,16 @@
+# dbt profile for the sales_project using Postgres (docker-compose)
+# Place this file in your home ~/.dbt/profiles.yml OR set environment variable
+# `DBT_PROFILES_DIR` to this repository root so dbt will pick it up.
+
+sales_project:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: postgres
+      port: 5432
+      user: user
+      password: password
+      dbname: sales_warehouse
+      schema: public
+      threads: 1

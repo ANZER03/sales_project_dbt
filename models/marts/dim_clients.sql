@@ -5,5 +5,5 @@ select
     name as full_name,
     occupation,
     img_link,
-    get_current_time() as loaded_at
+    current_timestamp as loaded_at
 from {{ ref('stg_clients') }}

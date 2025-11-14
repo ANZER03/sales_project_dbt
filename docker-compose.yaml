@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRESQL_DATABASE=sales_warehouse
+      - POSTGRESQL_USERNAME=user
+      - POSTGRESQL_PASSWORD=password
+
+  airflow:
+    build:
+      context: .
+      dockerfile: docker/airflow/Dockerfile
+    image: my-airflow-java:latest
+    container_name: airflow-sales_warehouse
+    command: standalone
+    ports:
+      - "8085:8080"
+    environment:
+      AIRFLOW_HOME: /opt/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__FERNET_KEY: kN45P14hhZCvGSqtEtFPi0P5xGX2YeliYg-6TS__Nuo=
+      AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS: "False"
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+      AIRFLOW__WEBSERVER__SECRET_KEY: 3f41712c0cf248978ede85425fa51c7f
+      DBT_PROJECT_DIR: /opt/airflow/dbt
+      DBT_PROFILES_DIR: /opt/airflow/dbt
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs/airflow:/opt/airflow/logs
+      - airflow_plugins:/opt/airflow/plugins
+      - "./:/opt/airflow/dbt"
+
+volumes:
+  postgres_data:
+  airflow_plugins:

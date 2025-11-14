@@ -17,6 +17,31 @@ Prerequisites
 - Python 3.10+ and pip
 - dbt-core and the DuckDB adapter are installed in the repository virtualenv (see `env/` in this project).
 
+Postgres notes
+- This repository includes a `docker-compose.yaml` that starts a Postgres instance pre-configured for this project.
+- The included Postgres credentials in `docker-compose.yaml` are:
+  - database: `sales_warehouse`
+  - user: `user`
+  - password: `password`
+  - port: `5432`
+
+Using Postgres with dbt
+- A `profiles.yml` for dbt is provided at the project root and configured to use the Postgres instance. dbt looks for `profiles.yml` in `~/.dbt/` by default. To use the included file without moving it, set the environment variable `DBT_PROFILES_DIR` to the project root before running dbt:
+
+```powershell
+$env:DBT_PROFILES_DIR = (Get-Location).Path
+dbt deps
+dbt seed --select Client_Table,Expense_Table,Property_Table,Sales_Table --full-refresh
+dbt run
+dbt test --select marts
+```
+
+Start Postgres via docker-compose (if not already running):
+
+```powershell
+docker compose up -d --build postgres
+```
+
 Common commands
 - Install packages declared in `packages.yml` (if any):
 
@@ -62,7 +87,7 @@ dbt docs serve --port 8081
 ```
 
 Notes on DuckDB specifics
-- The project uses DuckDB as the adapter. Some SQL functions differ from Postgres/BigQuery — the project uses DuckDB-compatible functions such as `get_current_time()` and `strftime()`.
+- The project defaults were originally created for DuckDB. Some SQL functions differ from Postgres/BigQuery — the project uses DuckDB-compatible functions such as `get_current_time()` and `strftime()`; review model SQL if you run into incompatibilities.
 
 Where to look
 - Staging models: `models/staging/stg_clients.sql`, `stg_property.sql`, `stg_sales.sql`, `stg_expense.sql`.

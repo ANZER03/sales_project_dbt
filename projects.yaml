@@ -2,5 +2,10 @@ sales_project:
   target : dev
   output :
     dev : 
-      type : duckdb
-      path : "{{ current_working_directory}}/salesDB.duckdb"
+      type : postgres
+      host : postgres
+      port : 5432
+      user : user
+      password : password
+      database : sales_warehouse
+      schema : public
